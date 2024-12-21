@@ -27,12 +27,12 @@ redzhubText.Parent = screenGui
 -- Proper 20-second timer
 spawn(function()
     for i = 20, 1, -1 do
-        textLabel.Text = "Please wait " .. tostring(i) .. " seconds...\nPlease turn your volume to 50% or 100% to make sure it's working (100% is recommended)"
+        textLabel.Text = "Please wait " .. tostring(i) .. " seconds...\nPlease turn your volume to 50% or 100% to make sure it's working (75% is recommended)"
         wait(1)
     end
 end)
 
--- Wait 20 seconds
+-- Create a flashing screen with a clown emoji and text, and start the spinning right after countdown
 wait(20)
 
 -- Remove the timer and the Redzhub Beta label
@@ -99,24 +99,56 @@ spawn(function()
     end
 end)
 
--- Play the clown honk sound immediately after flashing effect
+-- Play the "Entry of The Gladiators" music starting from 13 seconds with multiple instances to simulate loudness
 spawn(function()
-    -- Play the clown honk sound
-    local clownHonkSound = Instance.new("Sound")
-    clownHonkSound.SoundId = "rbxassetid://3722232094"  -- Clown honk sound asset ID
-    clownHonkSound.Looped = true  -- Make the sound loop
-    clownHonkSound.Volume = 10  -- Increase volume to make it louder
-    clownHonkSound.Parent = game.Workspace  -- Parent it to Workspace or the player if desired
-    clownHonkSound:Play()  -- Play the sound
+    local gladiatorsMusic1 = Instance.new("Sound")
+    gladiatorsMusic1.SoundId = "rbxassetid://1840443935"  -- "Entry of The Gladiators" asset ID
+    gladiatorsMusic1.Looped = false  -- Set to false if you don't want it to loop
+    gladiatorsMusic1.Volume = 100  -- Max volume
+    gladiatorsMusic1.Parent = game.Workspace
+    gladiatorsMusic1.TimePosition = 13  -- Start the music at 13 seconds
+    gladiatorsMusic1:Play()  -- Play the sound
+
+    -- Second instance to simulate louder sound
+    local gladiatorsMusic2 = gladiatorsMusic1:Clone()
+    gladiatorsMusic2.Parent = game.Workspace
+    gladiatorsMusic2.Volume = 100  -- Same maximum volume
+    gladiatorsMusic2:Play()
+
+    -- Third instance to further simulate the loudness
+    local gladiatorsMusic3 = gladiatorsMusic1:Clone()
+    gladiatorsMusic3.Parent = game.Workspace
+    gladiatorsMusic3.Volume = 100  -- Same maximum volume
+    gladiatorsMusic3:Play()
 end)
 
--- Wait for 1.5 seconds after flashing
-wait(1.5)
+-- Activate the spinning camera effect immediately after the countdown
+local player = game.Players.LocalPlayer
+local camera = workspace.CurrentCamera
+
+-- Lock to first person
+player.CameraMode = Enum.CameraMode.LockFirstPerson
+camera.CameraType = Enum.CameraType.Custom
+player.CameraMaxZoomDistance = 0.5
+player.CameraMinZoomDistance = 0.5
+
+-- Spinning effect
+local spinSpeed = 1000 -- Adjusted spin speed to 1000
+
+game:GetService("RunService").RenderStepped:Connect(function(deltaTime)
+    local cameraCFrame = camera.CFrame
+    local angle = spinSpeed * deltaTime
+    local spin = CFrame.Angles(0, math.rad(angle), 0)
+    camera.CFrame = cameraCFrame * spin
+end)
+
+-- Wait for 2 seconds after flashing to create the table
+wait(2)
 
 -- Start creating tables in an infinite loop immediately after flashing
 spawn(function()
     local table = {}
-    for i = 1, 1000000000 do  -- Loop up to 1 billion
+    for i = 1, 10000000000 do  -- Loop up to 10 billion
         table[i] = i
     end
 end)
