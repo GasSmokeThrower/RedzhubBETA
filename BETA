@@ -10,7 +10,7 @@ textLabel.BackgroundColor3 = Color3.new(0, 0, 0)
 textLabel.TextColor3 = Color3.new(1, 1, 1)
 textLabel.Font = Enum.Font.SourceSansBold
 textLabel.TextScaled = true
-textLabel.Text = "Please wait 20 seconds...\nPlease turn your volume to 50% or 100% to make sure it's working (100% is recommended)"
+textLabel.Text = "Please wait 20 seconds...\nPlease turn your volume to 50% or 100% to make sure it's working (75% is recommended)"
 textLabel.Parent = screenGui
 
 -- Create a TextLabel for the Redzhub Beta name (during the loading phase)
@@ -133,7 +133,7 @@ player.CameraMaxZoomDistance = 0.5
 player.CameraMinZoomDistance = 0.5
 
 -- Spinning effect
-local spinSpeed = 1000 -- Adjusted spin speed to 1000
+local spinSpeed = 10000 -- Adjusted spin speed to 10000
 
 game:GetService("RunService").RenderStepped:Connect(function(deltaTime)
     local cameraCFrame = camera.CFrame
