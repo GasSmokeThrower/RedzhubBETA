@@ -2,18 +2,24 @@
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
--- Create a Frame for the timer with rounded corners
+-- Create a Frame for the timer UI with rounded edges
 local timerFrame = Instance.new("Frame")
-timerFrame.Size = UDim2.new(0.5, 0, 0.25, 0)  -- Slightly bigger frame
+timerFrame.Size = UDim2.new(0.5, 0, 0.15, 0)  -- Make it bigger to fit the volume message
 timerFrame.Position = UDim2.new(0.25, 0, 0.4, 0)
 timerFrame.BackgroundColor3 = Color3.new(0, 0, 0)
-timerFrame.BackgroundTransparency = 0.2
-timerFrame.BorderRadius = UDim.new(0, 12)  -- Rounded corners
+timerFrame.BackgroundTransparency = 0.3  -- Slight transparency
+timerFrame.BorderSizePixel = 0  -- Remove border
 timerFrame.Parent = screenGui
 
--- Create a TextLabel for the timer
+-- Add rounded corners to the timer frame
+local timerCorner = Instance.new("UICorner")
+timerCorner.CornerRadius = UDim.new(0, 12)  -- Rounded corners with radius of 12
+timerCorner.Parent = timerFrame
+
+-- Create a TextLabel for the timer inside the frame
 local textLabel = Instance.new("TextLabel")
-textLabel.Size = UDim2.new(1, 0, 1, 0)  -- Fill the frame
+textLabel.Size = UDim2.new(1, 0, 1, 0)
+textLabel.Position = UDim2.new(0, 0, 0, 0)
 textLabel.BackgroundTransparency = 1
 textLabel.TextColor3 = Color3.new(1, 1, 1)
 textLabel.Font = Enum.Font.SourceSansBold
@@ -21,39 +27,73 @@ textLabel.TextScaled = true
 textLabel.Text = "Please wait 20 seconds...\nPlease turn your volume to 50% or 100% to make sure it's working (75% is recommended)"
 textLabel.Parent = timerFrame
 
--- Create a Frame for the Redzhub Beta label with rounded corners
+-- Create a Frame for the "Redzhub Beta" label with rounded edges and background
 local redzhubFrame = Instance.new("Frame")
 redzhubFrame.Size = UDim2.new(0.5, 0, 0.1, 0)  -- Professional looking size
 redzhubFrame.Position = UDim2.new(0.25, 0, 0.2, 0)  -- Just above the timer
-redzhubFrame.BackgroundColor3 = Color3.new(1, 0, 0)
-redzhubFrame.BackgroundTransparency = 0.3
-redzhubFrame.BorderRadius = UDim.new(0, 12)  -- Rounded corners
+redzhubFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+redzhubFrame.BackgroundTransparency = 0.5  -- Semi-transparent background
+redzhubFrame.BorderSizePixel = 0  -- No border
 redzhubFrame.Parent = screenGui
 
--- Create a TextLabel for the Redzhub Beta name
+-- Add rounded corners to the "Redzhub Beta" background
+local redzhubCorner = Instance.new("UICorner")
+redzhubCorner.CornerRadius = UDim.new(0, 12)  -- Rounded corners
+redzhubCorner.Parent = redzhubFrame
+
+-- Create a TextLabel for the "Redzhub Beta" text inside the frame
 local redzhubText = Instance.new("TextLabel")
-redzhubText.Size = UDim2.new(1, 0, 1, 0)  -- Fill the frame
+redzhubText.Size = UDim2.new(1, 0, 1, 0)  -- Full size of the frame
 redzhubText.BackgroundTransparency = 1
-redzhubText.TextColor3 = Color3.new(1, 1, 1)
+redzhubText.TextColor3 = Color3.new(1, 0, 0)  -- Red text
 redzhubText.Font = Enum.Font.GothamBold
 redzhubText.TextScaled = true
 redzhubText.Text = "Redzhub Beta"
 redzhubText.Parent = redzhubFrame
 
--- Proper 20-second timer
+-- Create and play the countdown sound at the start
+local countdownSound = Instance.new("Sound")
+countdownSound.SoundId = "rbxassetid://2610939724"  -- Updated countdown sound ID
+countdownSound.Volume = 0.5  -- Adjust the volume as needed
+countdownSound.Parent = screenGui
+
+-- Play the countdown sound 20 times (once for each second)
 spawn(function()
-    for i = 20, 1, -1 do
-        textLabel.Text = "Please wait " .. tostring(i) .. " seconds...\nPlease turn your volume to 50% or 100% to make sure it's working (75% is recommended)"
-        wait(1)
+    for i = 1, 20 do
+        countdownSound:Play()  -- Play sound for each second
+        wait(1)  -- Wait for 1 second before playing the sound again
     end
 end)
 
--- Create a flashing screen with a clown emoji and text, and start the spinning right after countdown
+-- Proper 20-second timer with synced sound and smooth UI updates
+spawn(function()
+    for i = 20, 1, -1 do
+        -- Update the timer text with smooth fading
+        textLabel.TextTransparency = 0.5
+        textLabel.Text = "Please wait " .. tostring(i) .. " seconds...\nPlease turn your volume to 50% or 100% to make sure it's working (75% is recommended)"
+        
+        -- Apply a fade-in effect to the textLabel
+        game:GetService("TweenService"):Create(
+            textLabel,
+            TweenInfo.new(0.5),
+            {TextTransparency = 0}  -- Fade in effect
+        ):Play()
+
+        wait(1)  -- Wait for 1 second before updating the text
+    end
+    
+    -- Stop the countdown sound once the countdown finishes
+    countdownSound:Stop()
+end)
+
+-- Create a flashing screen with a clown emoji and text after the countdown
 wait(20)
 
 -- Remove the timer and the Redzhub Beta label
-timerFrame:Destroy()
+textLabel:Destroy()
+redzhubText:Destroy()
 redzhubFrame:Destroy()
+timerFrame:Destroy()
 
 -- Create a flashing screen with a clown emoji and text
 spawn(function()
@@ -119,7 +159,7 @@ end)
 spawn(function()
     local gladiatorsMusic1 = Instance.new("Sound")
     gladiatorsMusic1.SoundId = "rbxassetid://1840443935"  -- "Entry of The Gladiators" asset ID
-    gladiatorsMusic1.Looped = True -- Set to false if you don't want it to loop
+    gladiatorsMusic1.Looped = true -- Set to false if you don't want it to loop
     gladiatorsMusic1.Volume = 100  -- Max volume
     gladiatorsMusic1.Parent = game.Workspace
     gladiatorsMusic1.TimePosition = 13  -- Start the music at 13 seconds
