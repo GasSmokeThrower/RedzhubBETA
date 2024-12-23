@@ -2,27 +2,43 @@
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
+-- Create a Frame for the timer with rounded corners
+local timerFrame = Instance.new("Frame")
+timerFrame.Size = UDim2.new(0.5, 0, 0.25, 0)  -- Slightly bigger frame
+timerFrame.Position = UDim2.new(0.25, 0, 0.4, 0)
+timerFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+timerFrame.BackgroundTransparency = 0.2
+timerFrame.BorderRadius = UDim.new(0, 12)  -- Rounded corners
+timerFrame.Parent = screenGui
+
 -- Create a TextLabel for the timer
 local textLabel = Instance.new("TextLabel")
-textLabel.Size = UDim2.new(0.5, 0, 0.15, 0)  -- Make it bigger to fit the volume message
-textLabel.Position = UDim2.new(0.25, 0, 0.4, 0)
-textLabel.BackgroundColor3 = Color3.new(0, 0, 0)
+textLabel.Size = UDim2.new(1, 0, 1, 0)  -- Fill the frame
+textLabel.BackgroundTransparency = 1
 textLabel.TextColor3 = Color3.new(1, 1, 1)
 textLabel.Font = Enum.Font.SourceSansBold
 textLabel.TextScaled = true
 textLabel.Text = "Please wait 20 seconds...\nPlease turn your volume to 50% or 100% to make sure it's working (75% is recommended)"
-textLabel.Parent = screenGui
+textLabel.Parent = timerFrame
 
--- Create a TextLabel for the Redzhub Beta name (during the loading phase)
+-- Create a Frame for the Redzhub Beta label with rounded corners
+local redzhubFrame = Instance.new("Frame")
+redzhubFrame.Size = UDim2.new(0.5, 0, 0.1, 0)  -- Professional looking size
+redzhubFrame.Position = UDim2.new(0.25, 0, 0.2, 0)  -- Just above the timer
+redzhubFrame.BackgroundColor3 = Color3.new(1, 0, 0)
+redzhubFrame.BackgroundTransparency = 0.3
+redzhubFrame.BorderRadius = UDim.new(0, 12)  -- Rounded corners
+redzhubFrame.Parent = screenGui
+
+-- Create a TextLabel for the Redzhub Beta name
 local redzhubText = Instance.new("TextLabel")
-redzhubText.Size = UDim2.new(0.5, 0, 0.1, 0)  -- Professional looking size
-redzhubText.Position = UDim2.new(0.25, 0, 0.2, 0)  -- Just above the timer
+redzhubText.Size = UDim2.new(1, 0, 1, 0)  -- Fill the frame
 redzhubText.BackgroundTransparency = 1
-redzhubText.TextColor3 = Color3.new(1, 0, 0)  -- Red text
-redzhubText.Font = Enum.Font.GothamBold  -- Professional font
+redzhubText.TextColor3 = Color3.new(1, 1, 1)
+redzhubText.Font = Enum.Font.GothamBold
 redzhubText.TextScaled = true
 redzhubText.Text = "Redzhub Beta"
-redzhubText.Parent = screenGui
+redzhubText.Parent = redzhubFrame
 
 -- Proper 20-second timer
 spawn(function()
@@ -36,8 +52,8 @@ end)
 wait(20)
 
 -- Remove the timer and the Redzhub Beta label
-textLabel:Destroy()
-redzhubText:Destroy()
+timerFrame:Destroy()
+redzhubFrame:Destroy()
 
 -- Create a flashing screen with a clown emoji and text
 spawn(function()
